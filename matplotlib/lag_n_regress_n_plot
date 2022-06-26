@@ -1,0 +1,22 @@
+import scipy
+import matplotlib.pylot as plt
+
+def adjust_n_regress(df, var1, var2, lag):
+  
+  df['lagged_' + var2] = df[var2].shift(lag)
+  
+  df = df.dropna()
+  
+  x = df[var1]
+  y = df['lagged_' + var2]
+  
+  slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x=x,y=y)
+  
+  plt.scatter(x,y)
+  x_vals = x
+  y_vals = intercept + slope * x_vals
+  plt.plot(x_vals, y_vals, '--')
+  plt_label = "FOR: " + var1 + " Versus:" + var2 +  " at days lag:" + str(lag) + "\nslope:" + str(round(slope,4)) + "\nintercept:" + str(round(intercept,4)) + "\nr_value:" + str(round(r_value,4)) + "\np_value:" + str(round(p_value,4)) + "\nstd_err:" + str(round(std_err,4))
+  plt.title(label = plt_label)
+  
+  
