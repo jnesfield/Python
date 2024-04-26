@@ -1,0 +1,7 @@
+spark df cum sum
+from pyspark.sql import Window
+from pyspark.sql import functions as F
+
+windowval = (Window.orderBy(F.desc(F.col('mean_conversion_probability')))
+             .rangeBetween(Window.unboundedPreceding, 0))
+sdf_temp = sdf_temp.withColumn('cum_sum', F.sum('volume').over(windowval))
